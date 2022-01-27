@@ -184,10 +184,15 @@ namespace EFPrueba
 
                 // 3 
                 WriteLine("8.- Idem pero con Exchanges ordenados por valor total");
-                var list8 = db.Moneda.ToList();
-                /*var list8 = db.Moneda.SelectMany(x => x.Contratos, (a,c) => new{
-                    
-                })*/
+                //var list8 = db.Moneda.ToList();
+                var list8 = db.Moneda.SelectMany(x => x.Contratos, (a,c) => new{
+                    Exchange = c.Cartera.Exchange,
+                    ValorTotal = a.Actual * c.Cantidad
+                }).GroupBy(e => e.Exchange).Select(h => new{
+                    Exchange = h.Key,
+                    ValorTotal = h.Key,
+                    Contratos = h.Count()
+                }).ToList();
                 list8.ForEach(Console.WriteLine);
 
                 // 3
